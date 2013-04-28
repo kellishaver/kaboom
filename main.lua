@@ -34,7 +34,7 @@ function love.load()
 
   bgSpeed = 150
 
-  enemies = {}
+  debris = {}
 
   gameMode = "title"
 
@@ -81,7 +81,7 @@ function love.update(dt)
       ship.y = ship.y + ship.speed*dt
     end
 
-    local remEnemy = {}
+    local remDebris = {}
     local remShot = {}
 
     for i,v in ipairs(ship.shots) do
@@ -89,11 +89,11 @@ function love.update(dt)
       if v.x > 800 then
         table.insert(remShot, i)
       end
-      for ii,vv in ipairs(enemies) do
+      for ii,vv in ipairs(debris) do
         if checkCollision(v.x, v.y, 5, 5, vv.x-3, vv.y-3, vv.width+6, vv.height+6) then
           player.score = player.score + vv.points
 
-          if math.fmod(player.score,10000) == 0 then
+          if math.fmod(player.score,5000) == 0 then
             player.lives = player.lives + 1
           end
 
@@ -117,34 +117,35 @@ function love.update(dt)
             vv.x = vv.x + asteroids.medium.width/2 - asteroids.small.width/2
             vv.y = vv.y + asteroids.medium.height/2 - asteroids.small.height/2
           else
-            table.insert(remEnemy, ii)
+            table.insert(remDebris, ii)
           end
           table.insert(remShot, i)
         end
       end
     end
 
-    for i,v in ipairs(enemies) do
+    for i,v in ipairs(debris) do
       v.rotation = v.rotation + 0.2
       v.x = v.x - dt * v.speed
       if v.x < -100 then
-        table.insert(remEnemy, i)
-        if player.score > 0 then
-          if v.width == 25 then
-            player.score = player.score -1
-          elseif v.width == 50 then
-            player.score = player.score - 3
-          else
-            player.score = player.score - 5
-          end
+        table.insert(remDebris, i)
+        if v.width == 25 and player.score > 0 then
+          player.score = player.score - 1
+        elseif v.width == 50 and player.score > 3 then
+          player.score = player.score - 3
+        elseif player.score > 5 then
+          player.score = player.score - 5
         end
       end
       if checkCollision(ship.x, ship.y, ship.width, ship.height, v.x, v.y, v.width, v.height) then
         kaboom:stop()
         hit:stop()
         love.audio.play(hit)
-        table.remove(enemies, i)
+        table.remove(debris, i)
         player.lives = player.lives - 1
+        if player.score > 100 then
+          player.score = player.score - 100
+        end
         if(player.lives < 0) then
           love.audio.stop()
           love.audio.play(gameover)
@@ -153,8 +154,8 @@ function love.update(dt)
       end
     end
 
-    for i,v in ipairs(remEnemy) do
-      table.remove(enemies, v)
+    for i,v in ipairs(remDebris) do
+      table.remove(debris, v)
       addAsteroid()
     end
 
@@ -172,9 +173,9 @@ function love.update(dt)
       bg2.x = bg1.x + bg1.width
     end
   elseif gameMode == "gameover" then
-    for i,v in ipairs(enemies) do
+    for i,v in ipairs(debris) do
       if v.x < 800 then
-        table.remove(enemies, i)
+        table.remove(debris, i)
         addAsteroid()
       end
     end
@@ -192,7 +193,7 @@ function love.draw()
 
     love.graphics.draw(ship.graphic, ship.x, ship.y)
 
-    for i,v in ipairs(enemies) do
+    for i,v in ipairs(debris) do
       if v.width == asteroids.large.width then
         love.graphics.draw(v.graphic, v.x, v.y)
       else
@@ -256,7 +257,7 @@ function addAsteroid()
       x = math.random(3200)+800,
       y = math.random(600-asteroids.large.height/2)
     }
-    table.insert(enemies, asteroid)
+    table.insert(debris, asteroid)
   elseif seed < 75 then
     local asteroid = {
       points = asteroids.medium.points,
@@ -268,7 +269,7 @@ function addAsteroid()
       x = math.random(3200)+800,
       y = math.random(600-asteroids.large.height/2)
     }
-    table.insert(enemies, asteroid)
+    table.insert(debris, asteroid)
   else
     local asteroid = {
       points = asteroids.large.points,
@@ -280,7 +281,7 @@ function addAsteroid()
       x = math.random(3200)+800,
       y = math.random(600-asteroids.large.height/2)
     }
-    table.insert(enemies, asteroid)
+    table.insert(debris, asteroid)
   end
 end
 
