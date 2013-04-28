@@ -97,6 +97,7 @@ function love.update(dt)
           love.audio.play(kaboom)
           if vv.graphic == asteroids.large.graphic then
             vv.graphic = asteroids.medium.graphic
+            vv.points = asteroids.medium.points
             vv.width = asteroids.medium.width
             vv.height = asteroids.medium.height
             vv.speed = math.random(100)+200
@@ -104,6 +105,7 @@ function love.update(dt)
             vv.y = vv.y + asteroids.large.height/2 - asteroids.medium.height/2
           elseif vv.graphic ==asteroids.medium.graphic then
             vv.graphic = asteroids.small.graphic
+            vv.points = asteroids.small.points
             vv.width = asteroids.small.width
             vv.height = asteroids.small.height
             vv.speed = math.random(100)+250
