@@ -93,10 +93,6 @@ function love.update(dt)
         if checkCollision(v.x, v.y, 5, 5, vv.x-3, vv.y-3, vv.width+6, vv.height+6) then
           player.score = player.score + vv.points
 
-          if math.fmod(player.score,5000) == 0 then
-            player.lives = player.lives + 1
-          end
-
           ship.laser:stop()
           kaboom:stop()
           love.audio.play(kaboom)
