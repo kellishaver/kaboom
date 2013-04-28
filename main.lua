@@ -129,6 +129,15 @@ function love.update(dt)
       v.x = v.x - dt * v.speed
       if v.x < -100 then
         table.insert(remEnemy, i)
+        if player.score > 0 then
+          if v.width == 25 then
+            player.score = player.score -1
+          elseif v.width == 50 then
+            player.score = player.score - 3
+          else
+            player.score = player.score - 5
+          end
+        end
       end
       if checkCollision(ship.x, ship.y, ship.width, ship.height, v.x, v.y, v.width, v.height) then
         kaboom:stop()
