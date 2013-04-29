@@ -62,6 +62,8 @@ function love.load()
     y = 275
   }
 
+  showFlash = 0
+
   title = love.graphics.newImage("assets/images/title.png")
 
   for i=0,20 do
@@ -137,6 +139,7 @@ function love.update(dt)
         kaboom:stop()
         hit:stop()
         love.audio.play(hit)
+        showFlash = 1
         table.remove(debris, i)
         player.lives = player.lives - 1
         if player.score > 100 then
@@ -179,6 +182,11 @@ function love.update(dt)
       table.remove(ship.shots, i)
     end
   end
+
+  if showFlash > 0 and showFlash < 1000 then
+    showFlash = showFlash + 1
+  end
+
 end
 
 function love.draw()
@@ -204,6 +212,12 @@ function love.draw()
 
     love.graphics.print("SCORE: " .. player.score, 10, 10)
     love.graphics.print("LIVES: " .. player.lives, 700, 10)
+
+    if showFlash > 0 and showFlash < 10 then
+      love.graphics.setColor(255,0,0,50)
+      love.graphics.rectangle("fill", 0, 0, 800, 600)
+    end
+
   elseif gameMode == "title" then
     love.audio.stop()
     love.graphics.draw(title, 0, 0)
