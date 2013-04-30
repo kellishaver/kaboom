@@ -190,6 +190,7 @@ function love.update(dt)
 end
 
 function love.draw()
+  love.graphics.setCaption("Kaboom")
   if gameMode == "play" then
     love.audio.play(music)
     love.graphics.draw(bg1.graphic, bg1.x, 0)
@@ -225,7 +226,7 @@ function love.draw()
     love.graphics.setColor(255,255,255,255)
     love.graphics.print("GAME OVER", 320, 270, 0, 2, 2)
     love.graphics.print("FINAL SCORE: " .. player.score, 320, 300)
-    love.graphics.print("Press 'c' to continue....", 10, 580)
+    love.graphics.print("Press 'c' to continue. Press 't' to tweet your score....", 10, 580)
   end
 end
 
@@ -250,6 +251,9 @@ function love.keyreleased(key)
   elseif gameMode == "gameover" then
     if (key == "c") then
       gameMode = "title"
+    end
+    if (key == "t") then
+      openURL()
     end
   end
 end
@@ -298,4 +302,16 @@ end
 function checkCollision(ax1,ay1,aw,ah, bx1,by1,bw,bh)
   local ax2,ay2,bx2,by2 = ax1 + aw, ay1 + ah, bx1 + bw, by1 + bh
   return ax1 < bx2 and ax2 > bx1 and ay1 < by2 and ay2 > by1
+end
+
+function openURL()
+   url = "https://twitter.com/intent/tweet?text=I+just+scored+".. player.score .."+points+playing+Kaboom.+http%3A%2F%2Fkaboom.herokuapp.com"
+   local os1 = love._os
+   if os1 == "OS X" then
+      os.execute("open "..url)
+   elseif os1 == "Windows" then
+      os.execute("start "..url)
+   elseif os1 == "Linux" then
+      os.execute("xdg-open "..url)
+   end
 end
