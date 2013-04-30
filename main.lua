@@ -305,7 +305,7 @@ function checkCollision(ax1,ay1,aw,ah, bx1,by1,bw,bh)
 end
 
 function openURL()
-   url = "https://twitter.com/intent/tweet?text=I+just+scored+".. player.score .."+points+playing+Kaboom.+http%3A%2F%2Fkaboom.herokuapp.com"
+   url = "https://twitter.com/intent/tweet?text=I+just+scored+".. player.score .."+points+playing+Kaboom.+http%3A%2F%2Fkaboom-game.herokuapp.com"
    local os1 = love._os
    if os1 == "OS X" then
       os.execute("open "..url)
