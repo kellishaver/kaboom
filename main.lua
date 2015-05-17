@@ -367,9 +367,9 @@ function love.draw()
     love.graphics.print("LIVES: " .. player.lives, 700, 10)
 
     -- Here's where we actually do that flash and make
-    -- the screen red for a bit.
+    -- the screen green for a bit.
     if showFlash > 0 and showFlash < 10 then
-      love.graphics.setColor(255,0,0,50)
+      love.graphics.setColor(66,255,0,50)
       love.graphics.rectangle("fill", 0, 0, 800, 600)
     end
 
