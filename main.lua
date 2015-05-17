@@ -190,7 +190,7 @@ function love.update(dt)
 end
 
 function love.draw()
-  love.graphics.setCaption("Kaboom")
+  love.window.setTitle("Kaboom")
   if gameMode == "play" then
     love.audio.play(music)
     love.graphics.draw(bg1.graphic, bg1.x, 0)
