@@ -1,6 +1,6 @@
-KABOOM
+KABOOM!
 ====
 
-I thought it would be fun to learn Lua and maybe make a cheesey space shooter in the process.
+Kaboom is an Asteroids-style arcade shooter that I created in order to try out Lua.
 
-This code is messy.
+Iti's very retro!
