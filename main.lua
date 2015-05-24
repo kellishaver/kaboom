@@ -31,7 +31,7 @@ function love.load()
 
   -- For the scrolling background, we'll repeatedly stitch
   -- together two separate background objects, which we
-  -- set up ehre.
+  -- set up here.
   bg1 = {
     graphic = love.graphics.newImage("assets/images/bg1.png"),
     x = 0,
@@ -65,8 +65,8 @@ function love.load()
   music:setVolume(0.5)
   music:setLooping(true)
 
-  -- Player object - very simple, holds score and ship.
-  -- Most other game data is stored in the ship.
+  -- Player object - very simple, holds score and number.
+  -- of lives. Most other game data is stored in the ship.
   player = {
     score = 0,
     lives = 3
@@ -118,7 +118,7 @@ function love.update(dt)
     -- of the screen so we can keep it confined within the
     -- screen - note, don't forget when checking the
     -- bottom and right edges to take into account the ship's
-    -- width and height.
+    -- height and width.
     if love.keyboard.isDown("left") and ship.x > 0 then
       ship.x = ship.x - ship.speed*dt
     elseif love.keyboard.isDown("right") and ship.x < 800 - ship.width then
@@ -136,7 +136,7 @@ function love.update(dt)
 
     -- Loop through all of the shots 
     for i,v in ipairs(ship.shots) do
-      -- When a shot moves off-screen, dump it into th e
+      -- When a shot moves off-screen, dump it into the
       -- table of shots to remove from the game.
       v.x = v.x + dt * 250
       if v.x > 800 then
@@ -167,7 +167,7 @@ function love.update(dt)
           -- Play the kaboom sound
           love.audio.play(kaboom)
 
-          -- If we hit one of the bit asteroids, we need to
+          -- If we hit one of the big asteroids, we need to
           -- turn it into a medium sized asteroid.
           if vv.graphic == asteroids.large.graphic then
 
@@ -198,14 +198,14 @@ function love.update(dt)
             vv.x = vv.x + asteroids.medium.width/2 - asteroids.small.width/2
             vv.y = vv.y + asteroids.medium.height/2 - asteroids.small.height/2
           
-          -- but if they're small to begin with, we can just
+          -- But if they're small to begin with, we can just
           -- go ahead and add them to the table of asteroids
           -- to be removed from the screen.
           else
             table.insert(remDebris, ii)
           end
 
-          -- We're done examining the sh ot and it's hit
+          -- We're done examining the shot and it's hit
           -- an asteroid, so it doesn't need to stick
           -- around, so let's add it to the table of shots
           -- to be removed.
@@ -248,6 +248,9 @@ function love.update(dt)
         kaboom:stop()
         hit:stop()
         love.audio.play(hit)
+
+        -- Tell our flash function that it needs to do
+        -- the screen flash.
         showFlash = 1
 
         -- Once an asteroid hits the ship, it's destroyed
@@ -334,7 +337,7 @@ end
 -- Now to actually draw the game.
 function love.draw()
 
-  -- Applicationw indow title
+  -- Application window title
   love.window.setTitle("Kaboom")
 
   -- If we're switching into the play mode...
@@ -346,7 +349,7 @@ function love.draw()
     love.graphics.draw(bg2.graphic, bg2.x, 0)
     love.graphics.draw(ship.graphic, ship.x, ship.y)
 
-    -- Loop th rough that table fo 20 asteroids we
+    -- Loop through that table fo 20 asteroids we
     -- created in the beginning and draw them.
     for i,v in ipairs(debris) do
       if v.width == asteroids.large.width then
@@ -426,10 +429,10 @@ function love.keyreleased(key)
   end
 end
 
--- The addAsteroid function we call atove needs
+-- The addAsteroid function we call above needs
 -- to do a few things.
 function addAsteroid()
-  -- Set a random seed  so we can set a random
+  -- Set a random seed so we can set a random
   -- asteroid size.
   local seed = math.random(100)
 
